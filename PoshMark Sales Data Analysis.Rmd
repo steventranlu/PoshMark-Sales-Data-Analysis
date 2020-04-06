@@ -1,0 +1,71 @@
+#Data Analysis on e-commerce website's performance
+#Third-Party Platform: Poshmarks
+#Data is authetic to personal e-commerce.
+
+#Setting up directory for imports of data
+```{r}
+getwd()
+setwd("/Users/StevenLu/Desktop")
+getwd()
+```
+
+#Importing Data
+#Data collected off PoshMark's website
+```{r}
+Data = read.csv("SalesData.csv", header = TRUE)
+```
+
+#Cleaning data/Remove insignificant variables
+```{r}
+Data = Data[-c(58:59),]
+Data$SKU = NULL
+Data$Cost.Price = NULL
+Data$Other.Info = NULL
+```
+
+#Revaluing Women/Men to Dummy Variables(1,0)
+```{r}
+library(plyr)
+Data$Department = revalue(Data$Department, c("Women"=1, "Men"=0))
+head(Data$Department)
+```
+
+#Revaluing Y/N to Dummy Variables(1,0)
+```{r}
+Data$Bundle.Order. = revalue(Data$Bundle.Order., c("Y"=1,"N"=0))
+Data$Offer.Order = revalue(Data$Offer.Order, c("Y"=1,"N"=0))
+Data$NWT = revalue(Data$NWT, c("Y"=1,"N"=0))
+```
+
+#Manipulating Columns to remove $$
+```{r}
+Data$Net.Earnings = as.numeric(gsub("\\$", "", Data$Net.Earnings))
+Data$Order.Price = as.numeric(gsub("\\$", "", Data$Order.Price))
+Data$Seller.Shipping.Discount = as.numeric(gsub("\\$", "", Data$Seller.Shipping.Discount))
+Data$Upgraded.Shipping.Label.Fee = as.numeric(gsub("\\$", "", Data$Upgraded.Shipping.Label.Fee))
+Data$Sales.Tax..Paid.by.Buyer. = as.numeric(gsub("\\$", "", Data$Sales.Tax..Paid.by.Buyer.))
+Data$Sales.Tax..Paid.by.Seller. = as.numeric(gsub("\\$", "", Data$Sales.Tax..Paid.by.Seller.))
+```
+
+#Creating a simple Linear Regression Model
+```{r}
+Linear.Model = lm(Net.Earnings ~ Order.Price, data = Data)
+summary(Linear.Model)
+```
+
+#Package Installation
+```{r}
+install.packages("tidyverse")
+install.packages("ggplot2")
+```
+
+#Creating Data Visualization of where my consumers are located
+```{r}
+library(ggplot2)
+ggplot(data = Data, aes(y = Net.Earnings, x = Buyer.State))+
+  geom_line(color = "Black", size = 1)
+```
+From the figure above, you can see that majority of my customers are in California and Washington. With this type of information, I can target consumers specifically based on seasons. 
+
+
+
