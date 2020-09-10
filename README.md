@@ -14,4 +14,6 @@ Additional analysis completed on 08/09/2020 using Python.
 
 Additional analysis completed on 08/15/2020 using Python.
 
+Additional analysis completed on 09/11/2020 using Python. R.I.P 9/11.
+
 Feel free to email me any questions at: steventranlu@gmail.com
